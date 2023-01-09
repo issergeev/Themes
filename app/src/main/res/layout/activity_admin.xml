@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AdminActivity">
+    tools:context=".AdminActivity"
+    android:background="#97DCDA7A">
 
     <TextView
+        android:id="@+id/admin_panel_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/edit_themes"
         android:gravity="center"
-        android:text="Admin"/>
-</LinearLayout>
+        android:text="Панель управления"
+        android:textSize="30sp"/>
+
+    <Button
+        android:id="@+id/edit_themes"
+        android:layout_centerInParent="true"
+        android:layout_height="50dp"
+        android:layout_width="300dp"
+        android:layout_margin="10dp"
+        android:text="Настройка тем"/>
+
+    <Button
+        android:id="@+id/edit_users"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/edit_themes"
+        android:layout_height="50dp"
+        android:layout_width="300dp"
+        android:layout_margin="10dp"
+        android:text="Настройка пользователей"/>
+</RelativeLayout>
