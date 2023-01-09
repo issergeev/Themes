@@ -3,10 +3,13 @@ package com.issergeev.themes;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SqlDataWorker {
 
@@ -56,6 +59,13 @@ public class SqlDataWorker {
                 new String[]{login});
     }
 
+    public long insertTheme(String themeName) {
+        ContentValues values = new ContentValues();
+
+        values.put(DB.getThemeName(), themeName);
+        return database.insert(DB.getThemesTableName(), null, values);
+    }
+
     //Reading rows in a Table in Database
 //    public String[] readEntry() {
 //        String[] allColumns = new String[] { DB.getUserLogin(), DB.getUserName(),
@@ -93,14 +103,61 @@ public class SqlDataWorker {
         return s;
     }
 
+    public List<Student> getStudentList() {
+        String[] columns = new String[] { DB.getUserName(), DB.getUserLastname(), DB.getThemeId() };
+        List<Student> students = new ArrayList<Student>();
+
+        Cursor c = database.query(DB.getUsersTableName(), columns, null, null, null,
+                null, null);
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                students.add(new Student(c.getString(c.getColumnIndex(DB.getUserName())),
+                        c.getString(c.getColumnIndex(DB.getUserLastname())),
+                        c.getString(c.getColumnIndex(DB.getThemeId()))));
+            } while (c.moveToNext());
+        }
+
+        return students;
+    }
+
+//    public ArrayList<String> getThemesCount() {
+//        ArrayList<String> numbers = new ArrayList<>();
+//
+//        Cursor c = database.query(DB.getThemesTableName(), new String[] {DB.getID()}, null, null, null,
+//                null, null);
+//
+//        if (c != null && c.moveToFirst()) {
+//            do {
+//                numbers.add(c.getString(c.getColumnIndex(DB.getOCCUPIED())));
+//            } while (c.moveToNext());
+//        }
+//
+//        return numbers;
+//    }
+
+    public List<Theme> getThemesList() {
+        String[] columns = new String[] { DB.getID(), DB.getThemeName() };
+        List<Theme> themes = new ArrayList<Theme>();
+
+        Cursor c = database.query(DB.getThemesTableName(), columns, null, null, null,
+                null, null);
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                themes.add(new Theme(c.getString(c.getColumnIndex(DB.getThemeName()))));
+            } while (c.moveToNext());
+        }
+
+        return themes;
+    }
+
     public void close() {
         dbhelper.close();
     }
 
     //Add Admin
-    public void addAdmin() {
-        String[] password = Encryption.Encrypt("P@ssw0rd");
-
+    public long addAdmin() {
         ContentValues values = new ContentValues();
 
         values.put(DB.getLOGIN(), "admin");
@@ -109,8 +166,19 @@ public class SqlDataWorker {
         values.put(DB.getUserName(), "Иван");
         values.put(DB.getUserLastname(), "Сергеев");
         values.put(DB.getUserAccess(), 2);
-        database.insert(DB.getUsersTableName(), null, values);
 
-        Log.d("2", "inserted");
+        try {
+            return database.insert(DB.getUsersTableName(), null, values);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            Log.d("2", "catch");
+        }
+        Log.d("2", "return");
+        return 0L;
+    }
+
+    public int deleteAdmin(String login) {
+        return database.delete(DB.getUsersTableName(), DB.getLOGIN() + " = ?",
+                new String[]{login});
     }
 }

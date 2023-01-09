@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class AdminActivity extends AppCompatActivity implements View.OnClickListener {
+    private long time = 0;
+
     private Intent intent;
 
     private Button editThemes, editUsers;
@@ -32,6 +35,19 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case (R.id.edit_users):
                 intent = new Intent(this, EditUsersActivity.class);
+        }
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //time = System.currentTimeMillis() + 2000;
+        if (time >= System.currentTimeMillis()) {
+            super.onBackPressed();
+        } else {
+            time = System.currentTimeMillis() + 2000;
+            Toast.makeText(this, "Нажмите еще раз для выхода", Toast.LENGTH_SHORT).show();
         }
     }
 }

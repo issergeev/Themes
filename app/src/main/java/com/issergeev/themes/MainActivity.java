@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -20,7 +21,9 @@ import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    SqlDataWorker worker = new SqlDataWorker(this);
+    private SqlDataWorker worker = new SqlDataWorker(this);
+
+    private long time = 0;
 
     private String[] user_data;
     private String appendixText, passwordText, loginText;
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout parent;
     private Button signin;
     private EditText login, password;
+    private TextView textView;
+    private Snackbar snackbar;
 
     private Intent start;
 
@@ -40,17 +45,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         signin = findViewById(R.id.button);
         login = findViewById(R.id.login);
         password = findViewById(R.id.password);
+        textView = findViewById(R.id.text);
 
-        signin.setOnClickListener(this);
-
-        SqlDataWorker worker = new SqlDataWorker(this);
         try {
             worker.open();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        worker.addAdmin();
-        worker.close();
+
+        textView.setOnClickListener(this);
+        signin.setOnClickListener(this);
+
+        SqlDataWorker worker = new SqlDataWorker(this);
+
+        snackbar = Snackbar.make(parent, "Login or password incorrect", Snackbar.LENGTH_SHORT)
+                .setAction("CLOSE", this);
     }
 
     @Override
@@ -84,22 +93,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             case 2:
                                 start = new Intent(this, AdminActivity.class);
                         }
+
+                        startActivity(start);
+                        finish();
                     } else {
-                        Toast.makeText(this, "Try again", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(this, "Try again", Toast.LENGTH_SHORT).show();
+                        snackbar.show();
                     }
                 } else {
-                    Snackbar.make(parent, "Login or password incorrect", Snackbar.LENGTH_SHORT)
-                            .setAction("CLOSE", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                }
-                            })
-                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
-                            .show();
+                    snackbar.show();
                 }
+                break;
+            case R.id.text:
+                if (time >= System.currentTimeMillis()) {
+                    Toast.makeText(this, worker.deleteAdmin("admin") != 0 ? "Admin deleted" : "Error", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, worker.addAdmin() != 0 ? "Admin added" : "Admin already exists",
+                            Toast.LENGTH_SHORT).show();
+                    time = System.currentTimeMillis() + 2000;
+                }
+            default:
         }
+    }
 
-        startActivity(start);
+    @Override
+    protected void onDestroy() {
+        worker.close();
+        super.onDestroy();
     }
 }

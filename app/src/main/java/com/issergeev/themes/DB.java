@@ -31,10 +31,6 @@ public class DB extends SQLiteOpenHelper {
         return THEME_NAME;
     }
 
-    public static String getOCCUPIED() {
-        return OCCUPIED;
-    }
-
     public static String getUserName() {
         return USER_NAME;
     }
@@ -57,17 +53,22 @@ public class DB extends SQLiteOpenHelper {
     private static final String PASSWORD = "password";
     private static final String SALT = "salt";
     private static final String USER_NAME = "user_name";
+
+    public static String getThemeId() {
+        return THEME_ID;
+    }
+
     private static final String USER_LASTNAME = "user_lastname";
+    private static final String THEME_ID = "theme_id";
     private static final String USER_ACCESS = "user_access";
 
     private static final String THEMES_TABLE_NAME = "themes";
     private static final String ID = "number";
     private static final String THEME_NAME = "theme_name";
-    private static final String OCCUPIED = "student_login";
 
     //Caption and Database version
     private static final String DB_NAME = "Themes.db";
-    private static final int DB_VERSION = 8;
+    private static final int DB_VERSION = 11;
 
     //Constructor
     public DB(Context context) {
@@ -81,11 +82,11 @@ public class DB extends SQLiteOpenHelper {
             + PASSWORD + " TEXT NOT NULL, "
             + USER_NAME + " TEXT NOT NULL,"
             + USER_LASTNAME + " TEXT NOT NULL,"
+            + THEME_ID + " TEXT,"
             + USER_ACCESS + " INTEGER NOT NULL);";
     private static final String CREATE_THEMES_TABLE = "CREATE TABLE IF NOT EXISTS " + THEMES_TABLE_NAME
             + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + THEME_NAME + " TEXT NOT NULL,"
-            + OCCUPIED + " TEXT);";
+            + THEME_NAME + " TEXT NOT NULL);";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
