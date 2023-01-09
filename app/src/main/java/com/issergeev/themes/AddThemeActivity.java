@@ -16,6 +16,8 @@ public class AddThemeActivity extends AppCompatActivity {
     private EditText themeName;
     private Button save;
 
+    private EditThemesActivity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +36,13 @@ public class AddThemeActivity extends AppCompatActivity {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(), worker.insertTheme(themeName.getText().toString()) != 0
-                        ? "Тема добавлена" : "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
-                worker.close();
-                finish();
+                if (worker.insertTheme(themeName.getText().toString()) != 0) {
+                    Toast.makeText(getApplicationContext(), "Тема добавлена", Toast.LENGTH_SHORT).show();
+                    worker.close();
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

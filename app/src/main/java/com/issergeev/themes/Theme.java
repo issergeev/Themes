@@ -11,7 +11,18 @@ public class Theme {
 
     private String themeName;
 
-    Theme(String themeName) {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    private long id;
+
+    Theme(long id, String themeName) {
         this.themeName = themeName;
+        this.id = id;
     }
 }

@@ -9,13 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ThemeName"
-        android:textSize="20sp"/>
-
-    <TextView
-        android:id="@+id/occupiedText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Иван Сергеев (ТЕСТ)"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:padding="10dp"/>
 </LinearLayout>

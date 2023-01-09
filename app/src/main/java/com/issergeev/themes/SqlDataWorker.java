@@ -59,6 +59,11 @@ public class SqlDataWorker {
                 new String[]{login});
     }
 
+    public int deleteTheme(long id) {
+        return database.delete(DB.getThemesTableName(), DB.getID() + " = ?",
+                new String[]{String.valueOf(id)});
+    }
+
     public long insertTheme(String themeName) {
         ContentValues values = new ContentValues();
 
@@ -145,7 +150,8 @@ public class SqlDataWorker {
 
         if (c != null && c.moveToFirst()) {
             do {
-                themes.add(new Theme(c.getString(c.getColumnIndex(DB.getThemeName()))));
+                themes.add(new Theme(Long.valueOf(c.getString(c.getColumnIndex(DB.getID()))),
+                        c.getString(c.getColumnIndex(DB.getThemeName()))));
             } while (c.moveToNext());
         }
 
@@ -170,10 +176,8 @@ public class SqlDataWorker {
         try {
             return database.insert(DB.getUsersTableName(), null, values);
         } catch (Exception e) {
-            //e.printStackTrace();
-            Log.d("2", "catch");
+            e.printStackTrace();
         }
-        Log.d("2", "return");
         return 0L;
     }
 
