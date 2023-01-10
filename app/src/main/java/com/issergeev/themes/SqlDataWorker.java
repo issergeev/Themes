@@ -34,28 +34,28 @@ public class SqlDataWorker {
         return this;
     }
 
-    public void insertUser(String login, String password, String name, String lastname, String user_access) {
+    public long insertUser(String login, String password, String salt, String name, String lastname, int user_access) {
         ContentValues values = new ContentValues();
 
         values.put(DB.getLOGIN(), login);
         values.put(DB.getPASSWORD(), password);
+        values.put(DB.getSALT(), salt);
         values.put(DB.getUserName(), name);
         values.put(DB.getUserLastname(), lastname);
         values.put(DB.getUserAccess(), user_access);
-        database.insert(DB.getUsersTableName(), null, values);
+        return database.insert(DB.getUsersTableName(), null, values);
     }
 
-    public void updateUser(String login, String password, String name, String lastname) {
+    public int updateUser(String login, String name, String lastname) {
         ContentValues values = new ContentValues();
 
-        values.put(DB.getPASSWORD(), password);
         values.put(DB.getUserName(), name);
         values.put(DB.getUserLastname(), lastname);
-        database.update(DB.getUsersTableName(), values, DB.getLOGIN() + " = ?", new String[]{login});
+        return database.update(DB.getUsersTableName(), values, DB.getLOGIN() + " = ?", new String[]{login});
     }
 
-    public void deleteUser(String login) {
-        database.delete(DB.getUsersTableName(), DB.getLOGIN() + " = ?",
+    public int deleteUser(String login) {
+        return database.delete(DB.getUsersTableName(), DB.getLOGIN() + " = ?",
                 new String[]{login});
     }
 
@@ -109,7 +109,7 @@ public class SqlDataWorker {
     }
 
     public List<Student> getStudentList() {
-        String[] columns = new String[] { DB.getUserName(), DB.getUserLastname(), DB.getThemeId() };
+        String[] columns = new String[] { DB.getUserName(), DB.getUserLastname(), DB.getThemeId(), DB.getLOGIN() };
         List<Student> students = new ArrayList<Student>();
 
         Cursor c = database.query(DB.getUsersTableName(), columns, null, null, null,
@@ -119,7 +119,24 @@ public class SqlDataWorker {
             do {
                 students.add(new Student(c.getString(c.getColumnIndex(DB.getUserName())),
                         c.getString(c.getColumnIndex(DB.getUserLastname())),
-                        c.getString(c.getColumnIndex(DB.getThemeId()))));
+                        c.getString(c.getColumnIndex(DB.getThemeId())),
+                        c.getString(c.getColumnIndex(DB.getLOGIN()))));
+            } while (c.moveToNext());
+        }
+
+        return students;
+    }
+
+    public List<String> getList() {
+        String[] columns = new String[] { DB.getLOGIN() };
+        List<String> students = new ArrayList<>();
+
+        Cursor c = database.query(DB.getUsersTableName(), columns, null, null, null,
+                null, null);
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                students.add(c.getString(c.getColumnIndex(DB.getLOGIN())));
             } while (c.moveToNext());
         }
 

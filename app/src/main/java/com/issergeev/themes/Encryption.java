@@ -27,7 +27,7 @@ public class Encryption {
             e.printStackTrace();
         }
 
-        return new String[] {password, salt};
+        return new String[] {generatedPassword, salt};
     }
 
     private static String generateSalt() {

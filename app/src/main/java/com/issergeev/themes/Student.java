@@ -33,10 +33,20 @@ public class Student {
     }
 
     private String themeID;
+    private String login;
 
-    Student(String name, String lastName, String themeID) {
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    Student(String name, String lastName, String themeID, String login) {
         this.name = name;
         this.lastName = lastName;
         this.themeID = themeID;
+        this.login = login;
     }
 }

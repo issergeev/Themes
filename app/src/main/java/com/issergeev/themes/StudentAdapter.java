@@ -6,36 +6,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class ThemesAdapter extends ArrayAdapter<Theme> {
+public class StudentAdapter extends ArrayAdapter<Student> {
     private LayoutInflater layoutInflater;
 
-    private List<Theme> themesList;
+    private List<Student> studentList;
     Context context;
 
-    public ThemesAdapter(@NonNull Context context, List<Theme> themes) {
-        super(context, 0, themes);
+    public StudentAdapter(@NonNull Context context, List<Student> students) {
+        super(context, 0, students);
 
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
-        themesList = themes;
+        studentList = students;
     }
 
     @Nullable
     @Override
-    public Theme getItem(int position) {
-        return themesList.get(position);
+    public Student getItem(int position) {
+        return studentList.get(position);
     }
 
     @NonNull
@@ -44,31 +39,31 @@ public class ThemesAdapter extends ArrayAdapter<Theme> {
         final ViewHolder viewHolder;
 
         if (convertView == null) {
-            View view = layoutInflater.inflate(R.layout.theme_card, parent, false);
+            View view = layoutInflater.inflate(R.layout.student_card, parent, false);
             viewHolder = ViewHolder.create((LinearLayout) view);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.themeName.setText(position+1 + ". " + themesList.get(position).getThemeName());
+        viewHolder.studentName.setText(position+1 + ". " + studentList.get(position).getFullName());
 
         return viewHolder.parentLayout;
     }
 
     private static class ViewHolder {
         private final LinearLayout parentLayout;
-        private final TextView themeName;
+        private final TextView studentName;
 
-        private ViewHolder(LinearLayout parentLayout, TextView themeName) {
+        private ViewHolder(LinearLayout parentLayout, TextView studentName) {
             this.parentLayout = parentLayout;
-            this.themeName = themeName;
+            this.studentName = studentName;
         }
 
         private static ViewHolder create(LinearLayout parentLayout) {
-            TextView themeName = parentLayout.findViewById(R.id.themeName);
+            TextView studentName = parentLayout.findViewById(R.id.student_name);
 
-            return new ViewHolder(parentLayout, themeName);
+            return new ViewHolder(parentLayout, studentName);
         }
     }
 }

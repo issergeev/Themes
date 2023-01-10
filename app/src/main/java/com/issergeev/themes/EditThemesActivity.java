@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -24,7 +23,7 @@ public class EditThemesActivity extends AppCompatActivity implements View.OnClic
     private FloatingActionButton add;
     private ListView list;
 
-    private ThemesAdapter adapter;
+    private ThemeAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +42,7 @@ public class EditThemesActivity extends AppCompatActivity implements View.OnClic
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        adapter = new ThemesAdapter(this, worker.getThemesList());
+        adapter = new ThemeAdapter(this, worker.getThemesList());
 
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -104,7 +103,7 @@ public class EditThemesActivity extends AppCompatActivity implements View.OnClic
         super.onRestart();
 
         adapter = null;
-        adapter = new ThemesAdapter(EditThemesActivity.this, worker.getThemesList());
+        adapter = new ThemeAdapter(EditThemesActivity.this, worker.getThemesList());
         list.setAdapter(adapter);
     }
 

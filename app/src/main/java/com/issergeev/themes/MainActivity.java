@@ -19,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -100,6 +101,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
 //                        Toast.makeText(this, "Try again", Toast.LENGTH_SHORT).show();
                         snackbar.show();
+//                        List<Student> l = worker.getStudentList();
+                        for (String s : user_data)
+                            Log.d("2", s);
+
+                        Log.d("2", Encryption.Encrypt("123")[0]);
                     }
                 } else {
                     snackbar.show();
