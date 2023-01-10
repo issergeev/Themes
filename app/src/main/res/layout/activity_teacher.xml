@@ -6,10 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".TeacherActivity">
 
-    <TextView
-        android:layout_width="match_parent"
+    <ListView
+        android:id="@+id/studentsList"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Teacher"/>
-
+        android:layout_width="match_parent"/>
 </LinearLayout>

@@ -3,9 +3,7 @@ package com.issergeev.themes;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -108,16 +106,35 @@ public class SqlDataWorker {
         return s;
     }
 
-    public List<Student> getStudentList() {
+    public List<User> getUserList() {
         String[] columns = new String[] { DB.getUserName(), DB.getUserLastname(), DB.getThemeId(), DB.getLOGIN() };
-        List<Student> students = new ArrayList<Student>();
+        List<User> users = new ArrayList<User>();
 
         Cursor c = database.query(DB.getUsersTableName(), columns, null, null, null,
                 null, null);
 
         if (c != null && c.moveToFirst()) {
             do {
-                students.add(new Student(c.getString(c.getColumnIndex(DB.getUserName())),
+                users.add(new User(c.getString(c.getColumnIndex(DB.getUserName())),
+                        c.getString(c.getColumnIndex(DB.getUserLastname())),
+                        c.getString(c.getColumnIndex(DB.getThemeId())),
+                        c.getString(c.getColumnIndex(DB.getLOGIN()))));
+            } while (c.moveToNext());
+        }
+
+        return users;
+    }
+
+    public List<User> getStudentList() {
+        String[] columns = new String[] { DB.getUserName(), DB.getUserLastname(), DB.getThemeId(), DB.getLOGIN() };
+        List<User> students = new ArrayList<User>();
+
+        Cursor c = database.query(DB.getUsersTableName(), columns, DB.getUserAccess() + " = ?", new String[] {"0"}, null,
+                null, null);
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                students.add(new User(c.getString(c.getColumnIndex(DB.getUserName())),
                         c.getString(c.getColumnIndex(DB.getUserLastname())),
                         c.getString(c.getColumnIndex(DB.getThemeId())),
                         c.getString(c.getColumnIndex(DB.getLOGIN()))));
@@ -169,6 +186,22 @@ public class SqlDataWorker {
             do {
                 themes.add(new Theme(Long.valueOf(c.getString(c.getColumnIndex(DB.getID()))),
                         c.getString(c.getColumnIndex(DB.getThemeName()))));
+            } while (c.moveToNext());
+        }
+
+        return themes;
+    }
+
+    public List<String> getThemesListString() {
+        String[] columns = new String[] { DB.getThemeName() };
+        List<String> themes = new ArrayList<String>();
+
+        Cursor c = database.query(DB.getThemesTableName(), columns, null, null, null,
+                null, null);
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                themes.add(c.getString(c.getColumnIndex(DB.getThemeName())));
             } while (c.moveToNext());
         }
 

@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class EditUsersActivity extends AppCompatActivity implements View.OnClickListener {
     private SqlDataWorker worker;
@@ -47,7 +46,7 @@ public class EditUsersActivity extends AppCompatActivity implements View.OnClick
             e.printStackTrace();
         }
 
-        adapter = new StudentAdapter(this, worker.getStudentList());
+        adapter = new StudentAdapter(this, worker.getUserList());
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -110,7 +109,7 @@ public class EditUsersActivity extends AppCompatActivity implements View.OnClick
         super.onRestart();
 
         adapter = null;
-        adapter = new StudentAdapter(EditUsersActivity.this, worker.getStudentList());
+        adapter = new StudentAdapter(EditUsersActivity.this, worker.getUserList());
         list.setAdapter(adapter);
     }
 

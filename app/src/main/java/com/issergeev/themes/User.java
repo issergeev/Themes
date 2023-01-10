@@ -1,6 +1,6 @@
 package com.issergeev.themes;
 
-public class Student {
+public class User {
     public String getName() {
         return name;
     }
@@ -43,7 +43,7 @@ public class Student {
         this.login = login;
     }
 
-    Student(String name, String lastName, String themeID, String login) {
+    User(String name, String lastName, String themeID, String login) {
         this.name = name;
         this.lastName = lastName;
         this.themeID = themeID;
